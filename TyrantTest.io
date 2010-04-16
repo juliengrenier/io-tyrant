@@ -7,6 +7,7 @@ TyrantTest := Object clone do(
                 writeln(actualValue)
                 Tyrant put("key2", 123)
                 writeln(Tyrant getNumber("key2"))
+                Tyrant clear
                 Tyrant stop
                 writeln("Everyting is fine")
                 )
