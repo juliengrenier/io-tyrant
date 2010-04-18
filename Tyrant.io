@@ -32,6 +32,10 @@ Tyrant := Object clone do(
     putKeep := method(key, value,
             genericPut(key,value,0x11 asCharacter)
             )
+
+    putCat := method(key, value,
+            genericPut(key,value,0x12 asCharacter)
+            )
     
     get := method(key,
             writeln("get value for key ", key)
@@ -47,7 +51,10 @@ Tyrant := Object clone do(
             value := socket readBytes(valueLength) 
             )
 
-    getString := method(key, get(key) asString)
+    getString := method(key, 
+           value := get(key)
+           if(value != nil, value asString, nil)
+           )
     getNumber := method(key, getString(key) asNumber)
 
     clear := method(
