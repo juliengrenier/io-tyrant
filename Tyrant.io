@@ -1,9 +1,8 @@
 
 Tyrant := Object clone do(
-    socket := Socket clone
 
+    socket := Socket clone
     cmdCharacter := 0xC8 asCharacter
-    putCharacter := 0x10 asCharacter
     getCharacter := 0x30 asCharacter
     vanishCharacter := 0x72 asCharacter
 
@@ -28,17 +27,12 @@ Tyrant := Object clone do(
             self
             )
     put := method(key, value,
-            if(socket isOpen == false, writeln("Must start first"); return) 
-            writeln("put a new value ", key, " := ", value)
-            socket write(cmdCharacter)  
-            socket write(putCharacter)
-            socket write(sizeInBytes(key size))
-            socket write(sizeInBytes(value asString size))
-            socket write(key)
-            socket write(value)
-
-            readStatus
+            genericPut(key,value,0x10 asCharacter)
             )
+    putKeep := method(key, value,
+            genericPut(key,value,0x11 asCharacter)
+            )
+    
     get := method(key,
             writeln("get value for key ", key)
             socket write(cmdCharacter)  
@@ -73,6 +67,18 @@ Tyrant := Object clone do(
             sizeBytesLength := aSize toBaseWholeBytes(16) size /2
             sizeBytes := Sequence clone setSize(4 - sizeBytesLength)
             sizeBytes append(aSize)
+            )
+    
+    genericPut := method(key, value, putCharacter,
+            if(socket isOpen == false, writeln("Must start first"); return) 
+            writeln("put a new value ", key, " := ", value)
+            socket write(cmdCharacter)  
+            socket write(putCharacter)
+            socket write(sizeInBytes(key size))
+            socket write(sizeInBytes(value asString size))
+            socket write(key)
+            socket write(value)
+            readStatus
             )
     )
 
