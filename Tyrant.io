@@ -40,7 +40,8 @@ Tyrant := Object clone do(
             socket write(sizeInBytes(key size))
             socket write(key)
 
-            readStatus
+            if( readStatus == 1, return nil)
+
             valueLength := socket readBytes(4) asHex asNumber
             writeln("value length : ", valueLength)
             value := socket readBytes(valueLength) 
@@ -58,8 +59,8 @@ Tyrant := Object clone do(
             )
 
     readStatus := method(
-            status := socket readBytes(1)
-            writeln("status : ", status asHex)
+            status := socket readBytes(1) asHex asNumber
+            writeln("status : ", status)
             status
             )
 

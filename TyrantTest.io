@@ -11,6 +11,11 @@ TyrantTest := UnitTest clone do(
     Tyrant put("key","value")
     assertEquals("value",Tyrant getString("key"))
     )
+  testClear := method(
+    Tyrant put("key.clear","value")
+    Tyrant clear
+    #assertEquals(nil, Tyrant getString("key.clear"))
+    )
   testPutKeep := method(
     Tyrant put("key","value.1")
     Tyrant putKeep("key", "unexepted")
