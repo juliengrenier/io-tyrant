@@ -35,9 +35,9 @@ Tyrant := Object clone do(
             )
     remove := method(key,
             writeln("out value for key ", key)
-            genericGet(key,0x20 asCharacter) == 0
+            writeKey(key,0x20 asCharacter) == 0
             )
-    genericGet := method(key,getCmd,
+    writeKey := method(key,getCmd,
             writeCmd(getCmd)
             socket write(sizeInBytes(key size))
             socket write(key)
@@ -45,13 +45,13 @@ Tyrant := Object clone do(
             )
     sizeOf := method(key,
             writeln("size Off ", key)
-            if(genericGet(key, 0x38 asCharacter) == 1, return 0)
+            if(writeKey(key, 0x38 asCharacter) == 1, return 0)
             valueLength := socket readBytes(4) asHex asNumber
             )
            
     get := method(key,
             writeln("get value for key ", key)
-            if(genericGet(key,0x30 asCharacter) == 1, return nil)
+            if(writeKey(key,0x30 asCharacter) == 1, return nil)
 
             valueLength := socket readBytes(4) asHex asNumber
             writeln("value length : ", valueLength)
@@ -70,6 +70,23 @@ Tyrant := Object clone do(
 
             readStatus
             )
+
+    listKeys := method(
+           writeCmd(0x50 asCharacter)
+           if(readStatus != 0, return nil)
+           aList := List clone
+
+           writeCmd(0x51 asCharacter) 
+           while(readStatus == 0,
+
+                   writeCmd(0x51 asCharacter) 
+                   valueLength := socket readBytes(4) asHex asNumber
+                   value := socket readBytes(valueLength) 
+                   aList append(value)
+
+                )
+           aList
+           )
 
     readStatus := method(
             status := socket readBytes(1) asHex asNumber
