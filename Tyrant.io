@@ -3,7 +3,6 @@ Tyrant := Object clone do(
 
     socket := Socket clone
     cmdCharacter := 0xC8 asCharacter
-    getCharacter := 0x30 asCharacter
     vanishCharacter := 0x72 asCharacter
 
     start := method(
@@ -33,18 +32,29 @@ Tyrant := Object clone do(
             genericPut(key,value,0x11 asCharacter)
             )
 
-    putCat := method(key, value,
+    append := method(key, value,
             genericPut(key,value,0x12 asCharacter)
             )
-    
-    get := method(key,
-            writeln("get value for key ", key)
+    exist := method(key,
+            writeln("out value for key ", key)
+            genericGet(key,0x20 asCharacter) == 0
+            )
+    genericGet := method(key,getCmd,
             socket write(cmdCharacter)  
-            socket write(getCharacter)
+            socket write(getCmd)
             socket write(sizeInBytes(key size))
             socket write(key)
-
-            if( readStatus == 1, return nil)
+            readStatus
+            )
+    sizeOf := method(key,
+            writeln("size Off ", key)
+            if(genericGet(key, 0x38 asCharacter) == 1, return 0)
+            valueLength := socket readBytes(4) asHex asNumber
+            )
+           
+    get := method(key,
+            writeln("get value for key ", key)
+            if(genericGet(key,0x30 asCharacter) == 1, return nil)
 
             valueLength := socket readBytes(4) asHex asNumber
             writeln("value length : ", valueLength)

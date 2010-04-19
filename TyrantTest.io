@@ -11,6 +11,11 @@ TyrantTest := UnitTest clone do(
     Tyrant put("key","value")
     assertEquals("value",Tyrant getString("key"))
     )
+  testPutTwice := method(
+    Tyrant put("key","value")
+    Tyrant put("key","value.new")
+    assertEquals("value.new",Tyrant getString("key"))
+    )
   testClear := method(
     Tyrant put("key.clear","value")
     Tyrant clear
@@ -21,13 +26,23 @@ TyrantTest := UnitTest clone do(
     Tyrant putKeep("key", "unexepted")
     assertEquals("value.1",Tyrant getString("key"))
     )
-  testPutCat := method(
+  testAppend := method(
     Tyrant put("key","value.1")
-    Tyrant putCat("key", "value.2")
+    Tyrant append("key", "value.2")
     assertEquals("value.1value.2",Tyrant getString("key"))
     )
   testGetNumber := method(
     Tyrant put("key", 123)
     assertEquals(123, Tyrant getNumber("key"))
+    )
+  testExist := method(
+    Tyrant put("key", 123)
+    assertTrue(Tyrant exist("key"))
+    assertFalse(Tyrant exist("invalid.key"))
+    )
+  testSizeOf := method(
+    Tyrant put("key", "value")
+    assertEquals(5, Tyrant sizeOf("key"))
+    assertEquals(0, Tyrant sizeOf("invalid.key"))
     )
 )
