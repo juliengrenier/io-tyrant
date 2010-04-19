@@ -35,10 +35,11 @@ TyrantTest := UnitTest clone do(
     Tyrant put("key", 123)
     assertEquals(123, Tyrant getNumber("key"))
     )
-  testExist := method(
+  testRemove := method(
     Tyrant put("key", 123)
-    assertTrue(Tyrant exist("key"))
-    assertFalse(Tyrant exist("invalid.key"))
+    assertTrue(Tyrant remove("key"))
+    assertFalse(Tyrant remove("key"))
+    assertFalse(Tyrant remove("invalid.key"))
     )
   testSizeOf := method(
     Tyrant put("key", "value")

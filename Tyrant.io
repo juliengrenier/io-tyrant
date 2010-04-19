@@ -2,8 +2,6 @@
 Tyrant := Object clone do(
 
     socket := Socket clone
-    cmdCharacter := 0xC8 asCharacter
-    vanishCharacter := 0x72 asCharacter
 
     start := method(
             startWithHost("localhost")
@@ -35,13 +33,12 @@ Tyrant := Object clone do(
     append := method(key, value,
             genericPut(key,value,0x12 asCharacter)
             )
-    exist := method(key,
+    remove := method(key,
             writeln("out value for key ", key)
             genericGet(key,0x20 asCharacter) == 0
             )
     genericGet := method(key,getCmd,
-            socket write(cmdCharacter)  
-            socket write(getCmd)
+            writeCmd(getCmd)
             socket write(sizeInBytes(key size))
             socket write(key)
             readStatus
@@ -69,8 +66,7 @@ Tyrant := Object clone do(
 
     clear := method(
             writeln("clear the database")
-            socket write(cmdCharacter)
-            socket write(vanishCharacter)
+            writeCmd(0x72 asCharacter)
 
             readStatus
             )
@@ -90,13 +86,17 @@ Tyrant := Object clone do(
     genericPut := method(key, value, putCharacter,
             if(socket isOpen == false, writeln("Must start first"); return) 
             writeln("put a new value ", key, " := ", value)
-            socket write(cmdCharacter)  
-            socket write(putCharacter)
+            writeCmd(putCharacter)
             socket write(sizeInBytes(key size))
             socket write(sizeInBytes(value asString size))
             socket write(key)
             socket write(value)
             readStatus
             )
+    writeCmd := method(cmdCharacter,
+            socket write(0xC8 asCharacter)  
+            socket write(cmdCharacter)
+            )
+           
     )
 
