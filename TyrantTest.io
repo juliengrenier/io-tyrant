@@ -55,4 +55,11 @@ TyrantTest := UnitTest clone do(
     assertEquals(5, Tyrant sizeOf("key"))
     assertEquals(0, Tyrant sizeOf("invalid.key"))
     )
+  testRecordCount := method(
+    Tyrant put("key.1","value.1")
+    Tyrant put("key.2","value.2")
+    Tyrant put("key.3","value.3")
+    Tyrant put("key.4","value.4")
+    assertEquals(4, Tyrant recordCount) 
+    )
 )

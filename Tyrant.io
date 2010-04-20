@@ -72,6 +72,8 @@ Tyrant := Object clone do(
             )
 
     listKeys := method(
+           maxSize := call message argCount
+           
            writeCmd(0x50 asCharacter)
            if(readStatus != 0, return nil)
            aList := List clone
@@ -87,6 +89,12 @@ Tyrant := Object clone do(
                 )
            aList
            )
+    recordCount := method(
+            writeCmd(0x80 asCharacter)
+            readStatus
+            socket readBytes(8) asHex asNumber
+
+            )
 
     readStatus := method(
             status := socket readBytes(1) asHex asNumber

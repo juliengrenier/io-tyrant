@@ -1,13 +1,13 @@
 #INTRO
 
-  io-tyrant is a implemention of the binary TokyoTyrant procotol <http://1978th.net/tokyotyrant/spex.html#protocol>.
+  io-tyrant is a implemention of the binary TokyoTyrant procotol http://1978th.net/tokyotyrant/spex.html#protocol.
   The purpose of the project is to get familiar with the io-language.
 
 #DEPENDENCIES
 
-  - Install io <http://www.iolanguage.com/>
-  - Install tokyo cabinet <http://1978th.net/tokyocabinet/>
-  - Install tokyo tyrant server <http://1978th.net/tokyocabinet/>
+  - Install io http://www.iolanguage.com/
+  - Install tokyo cabinet http://1978th.net/tokyocabinet/
+  - Install tokyo tyrant server http://1978th.net/tokyocabinet/
    
 #INSTALLTION
   - Download the sources.
