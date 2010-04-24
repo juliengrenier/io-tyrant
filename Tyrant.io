@@ -37,12 +37,6 @@ Tyrant := Object clone do(
             writeln("out value for key ", key)
             _writeKey(key,0x20 asCharacter) == 0
             )
-    _writeKey := method(key,getCmd,
-            _writeCmd(getCmd)
-            socket write(_sizeInBytes(key size))
-            socket write(key)
-            _readStatus
-            )
     sizeOf := method(key,
             writeln("size Off ", key)
             if(_writeKey(key, 0x38 asCharacter) == 1, return 0)
@@ -108,7 +102,18 @@ Tyrant := Object clone do(
             socket readBytes(8) asHex asNumber
 
             )
-
+    stats := method(
+           _writeCmd(0x88 asCharacter)
+           _readStatus
+           valueLength := socket readBytes(4) asHex asNumber
+           value := socket readBytes(valueLength) asJson
+           )
+    _writeKey := method(key,getCmd,
+            _writeCmd(getCmd)
+            socket write(_sizeInBytes(key size))
+            socket write(key)
+            _readStatus
+            )
     _readStatus := method(
             status := socket readBytes(1) asHex asNumber
             writeln("status : ", status)

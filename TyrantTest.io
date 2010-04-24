@@ -76,4 +76,9 @@ TyrantTest := UnitTest clone do(
     Tyrant put("key.4","value.4")
     assertEquals(4, Tyrant recordCount) 
     )
+  testStats := method(
+    Tyrant put("key.1","value.1")
+    stats := Tyrant stats
+    writeln(stats)
+  )
 )
