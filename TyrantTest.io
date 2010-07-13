@@ -1,7 +1,8 @@
 
 TyrantTest := UnitTest clone do(
   setUp := method(
-    Tyrant start
+    Tyrant start debugOn
+#    Tyrant start debugOff
     )
   tearDown := method(
     Tyrant clear
@@ -76,6 +77,10 @@ TyrantTest := UnitTest clone do(
     Tyrant put("key.4","value.4")
     assertEquals(4, Tyrant recordCount) 
     )
+  testRecordCount20 := method(
+    for(i, 1, 20, Tyrant put("key".. i, "value".. i))
+    assertEquals(20, Tyrant recordCount)
+  )
   testStats := method(
     Tyrant put("key.1","value.1")
     stats := Tyrant stats
